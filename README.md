@@ -107,3 +107,6 @@ Na parte final desta função, coletamos os comentários (através de uma outra 
 ## Detalhamento da coleta de comentários
 A função ```collecting_comments``` foi colocada à parte para organizar melhor o código, deixando ele mais claro e menos complexo. Além disso, podemos tratar de forma menos confusa possíveis erros que possam acontecer nessa parte, evitando assim que o programa quebre por completo ao deixar tudo dentro de uma só função. 
 
+O funcionamento da função é simples: procuramos elementos clicáveis na página que possuem o nome *status* na url. Para isso, utilizamos o seletor ```'a[href*="/status/"]'```. Em redes sociais como o X, normalmente esse seletor aponta para atualizações de status e postagens. Depois de abrir o post, salvamos em uma lista todos os elementos que achamos.
+
+Agora iteramos sobre a lista criada pulando o primeiro elemento, que é a postagem principal, e coletamos os comentários. Extraímos o texto do comentário e adicionamos o conteúdo na lista **comments** (que utilizamos na função ```collecting_posts```). Por fim voltamos para a página inicial a fim de coletar os comentários de mais posts.

@@ -253,4 +253,61 @@ def collecting_posts(url, username, password, num_posts=10):
     return collected_data
 
 def collecting_comments(driver, post, post_index):
-    ...
+    comments = []
+
+    try:
+        clickable_elements = post.find_elements(By.CSS_SELECTOR, 
+                                                'a[href*="/status/"]')
+
+        if clickable_elements:
+            original_url = driver.current_url
+
+            driver.execute_script("arguments[0].click();", 
+                                  clickable_elements[0])
+            print(f"Abrindo um post...")
+            time.sleep(6)
+
+            # 3 é o número de rolagens que vamos fazer, para 
+            # carregar mais comentários
+            for i in range(3): 
+                driver.execute_script("window.scrollTo(0, " \
+                "window.scrollY + 800);")
+                time.sleep(2)
+
+            comment_elements = driver.find_elements(
+                By.CSS_SELECTOR, 
+                'article[data-testid="tweet"]'
+            )
+
+            print(f"Encontrados {len(comment_elements)} elementos.")
+
+            for comment_index, comment_element in enumerate(
+                comment_elements[1:9], 1
+            ):
+            # pulamos o primeiro post, que é o original, 
+            # e coletamos até 8 comentários
+                try:
+                    comment_text_elements = comment_element.find_elements(
+                        By.CSS_SELECTOR, 
+                        'data-testid="tweetText"]'
+                    )
+                    if comment_text_elements:
+                        commentary_text = comment_text_elements[0].text
+                        if commentary_text.strip() and len(commentary_text) > 5:
+                            comments.append(commentary_text)
+                            print(f"Comentário {comment_index}: {commentary_text[:40]}...")
+                except Exception as e:
+                    print(f"Erro no comentário {comment_index}: {e}.")
+                    continue
+            
+            # voltando para a página inicial
+            driver.get(original_url)
+            time.sleep(3)
+        
+        else:
+            print(f"Post não encontrado.")
+
+    except Exception as e:
+        print(f"Erro ao coletar os comentários da postagem: {e}.")
+
+    return comments
