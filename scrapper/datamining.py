@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import annotations
 import time
 import getpass
 from selenium import webdriver
@@ -33,14 +33,15 @@ def login_twitter(driver, username, password):
         username_field = None
         for selector in username_selectors:
             try:
-                username_field = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, selector)))
+                username_field = wait.until(EC.presence_of_element_located
+                                            ((By.CSS_SELECTOR, selector)))
                 break
             except:
                 continue
 
         # caso não encontre:
         if not username_field:
-            print("👀Campo USERNAME não encontrado ainda.")
+            print("👀Campo USERNAME não encontrado.")
             return False
         
         # caso encontre o campo USERNAME:
@@ -63,14 +64,15 @@ def login_twitter(driver, username, password):
         password_field = None
         for selector in password_selectors:
             try:
-                password_field = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, selector)))
+                password_field = wait.until(EC.presence_of_element_located
+                                            ((By.CSS_SELECTOR, selector)))
                 break
             except:
                 continue
         
         # caso não encontre:
         if not password_field:
-            print("👀Campo SENHA ainda não encontrado.")
+            print("👀Campo SENHA não encontrado.")
             return False
         
         # caso encontre o campo SENHA:
@@ -102,9 +104,153 @@ def login_twitter(driver, username, password):
             print("✅O login foi feito com sucesso!")
             return True
         else:
-            print("❌Login falhou. Por favor, verifique usuário e senha novamente.")
+            print("❌Login falhou. Por favor, verifique usuário e senha " \
+            "novamente.")
             return False
         
     except Exception as e:
         print(f"❌Falha! Erro durante login: {e}")
         return False
+
+def collecting_posts(url, username, password, num_posts=10):
+    
+    # configs do navagador (ver README)
+    options = webdriver.ChromeOptions()
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install(), 
+                                              options=options))
+    driver.execute_script("Object.defineProperty(navigator, 'webdriver', " \
+    "{get: () => undefined})")
+
+    try:
+        if not login_twitter(driver, username, password):
+            print("Erro! Não foi possível fazer o login.")
+            return []
+        
+        print(f"Acessando: {url}")
+        driver.get(url)
+        time.sleep(8)
+
+        # extraindo só o nome do portal de notícias:
+        news_channel = url.split('/')[-1] if url.split('/')[-1] \
+                       else url.split('/')[-2]
+        
+        if not news_channel.startswith('@'):
+            news_channel = '@' + news_channel
+
+        collected_data = []
+        processed_posts = set() # para evitar repetições (ver README)
+        collected_posts = 0
+        scrollings = 0
+        max_scrollings = 15
+
+        print(f'Coletando dados do portal {news_channel}')
+
+        while collected_posts < num_posts and scrollings < max_scrollings:
+            # começa a busca pelos posts
+            posts = driver.find_elements(By.CSS_SELECTOR, 
+                                         'article[data-testid="tweet"]')
+            
+            if not posts:
+                print("Nenhum post foi encontrado na página.")
+                driver.execute_script("window.scrollTo"
+                "(0, document.body.scrollHeight);")
+                time.sleep(5)
+                scrollings += 1
+                continue
+
+            print(f'Foram encontrados {len(posts)} posts na página.')
+            posts_on_iteration = 0
+
+            for post_index in range(len(posts)):
+                if collected_posts >= num_posts:
+                    break
+
+                try:
+                    # realiza nova busca para evitar stale elements (ver README)
+                    posts_now = driver.find_elements(
+                        By.CSS_SELECTOR, 'article[data-testid="tweet"]'
+                        )
+                    
+                    if post_index >= len(posts_now): # posição na página
+                        continue
+
+                    post = posts_now[post_index]
+
+                    text_elements = post.find_elements(
+                        By.CSS_SELECTOR, '[data-testid="tweetText"]'
+                        )
+                    post_text = ""
+                    if text_elements:
+                        post_text = text_elements[0].text
+
+                    if not post_text.strip():
+                        continue
+
+                    #verificando posts (buscas) duplicados:
+                    post_id = f'{post_index}_{hash(post_text)}'
+                    if post_id in processed_posts:
+                        continue
+
+                    processed_posts.add(post_id)
+                    posts_on_iteration += 1
+                    post_code = collected_posts + 1
+
+                    print(f'Post {post_code}: {post_text[:50]}...')
+
+                    # coleta de comentários
+                    comments = collecting_comments(driver, post, post_index)
+
+                    if not comments:
+                        comments = [""]
+
+                    for comment in comments:
+                        collected_data.append({
+                            "post_code": post_code,
+                            "news_channel": news_channel,
+                            "post_text": post_text,
+                            "comment_text": comment
+                        })
+
+                    valid_comments = len([c for c in comments if c.strip()])
+                    print(f"Foram coletados {valid_comments} comentários.")
+
+                    collected_posts += 1
+
+                except Exception as e:
+                    print(f'Erro no post {post_index}: {e}')
+                    continue
+
+            if collected_posts < num_posts:
+                print(f"Rolando a página... ({collected_posts}/{num_posts})")
+                driver.execute_script("window.scrollTo"
+                "(0, document.body.scrollHeight);")
+                time.sleep(5)
+                scrollings += 1
+
+    except Exception as e:
+        print(f'❌Falha! Erro durante a coleta: {e}')
+
+    finally:
+        print("Fazendo logout e fechando o navegador...")
+        try:
+            driver.get("https://x.com/logout")
+            time.sleep(2)
+        except Exception as e:
+            print("Não conseguiu fazer logout.")
+        driver.quit()
+
+    comments_finded = len([d for d in collected_data if d['comment_text'].strip()])
+    print("Finalizamos a coleta!")
+    print(f"Foram coletados {len(collected_data)} posts, " \
+          f"sendo {comments_finded} com comentários.")
+
+    return collected_data
+
+def collecting_comments(driver, post, post_index):
+    ...
