@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import annotations
 import time
-import getpass
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -122,8 +120,13 @@ def collecting_posts(url, username, password, num_posts=10):
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install(), 
-                                              options=options))
+    # Tenta usar chromedriver já instalado, se não conseguir, baixa
+    try:
+        driver = webdriver.Chrome(options=options)
+    except:
+        # Fallback para o ChromeDriverManager se o driver não estiver no PATH
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), 
+                                  options=options)
     driver.execute_script("Object.defineProperty(navigator, 'webdriver', " \
     "{get: () => undefined})")
 
