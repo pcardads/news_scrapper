@@ -22,7 +22,7 @@ Por exemplo, ```'input[name="text"]'``` localiza um elemento <input> que possui 
 Se após a varredura feita no loop nada for encontrado, o usuário é avisado que o campo username não foi encontrado, e a função termina retornando False. Se o scrapper achar nosso campo, o seguinte bloco de código será executado:
 
 ```
-    print(f'✏️Campo sendo preenchido: username({username})')
+    print(f'Campo sendo preenchido: username({username})')
     username_field.clear()
     username_field.send_keys(username)
     username_field.send_keys(Keys.RETURN)
@@ -110,3 +110,29 @@ A função ```collecting_comments``` foi colocada à parte para organizar melhor
 O funcionamento da função é simples: procuramos elementos clicáveis na página que possuem o nome *status* na url. Para isso, utilizamos o seletor ```'a[href*="/status/"]'```. Em redes sociais como o X, normalmente esse seletor aponta para atualizações de status e postagens. Depois de abrir o post, salvamos em uma lista todos os elementos que achamos.
 
 Agora iteramos sobre a lista criada pulando o primeiro elemento, que é a postagem principal, e coletamos os comentários. Extraímos o texto do comentário e adicionamos o conteúdo na lista **comments** (que utilizamos na função ```collecting_posts```). Por fim voltamos para a página inicial a fim de coletar os comentários de mais posts.
+
+
+## Processamento dos dados coletados
+No módulo *processing.py* vamos utilizar algumas bibliotecas específicas para analisar o sentimento dos comentários que foram coletados, organizar os dados em um arquivo csv e apresentá-los de forma organizada em tabelas.
+
+### ```def clean text```
+Aqui vamos fazer uma limpeza nos textos dos comentários que coletamos, porque no geral eles podem vir com emojis, caracteres especiais e conteúdos de mídia. Para isso, vamos utilizar as *expressões regulares* através da importação do módulo **re**.
+
+```re.sub(r'https?://\S+|www\.\S+', '', text)```
+Procura os caracteres http:// ou https:// seguidos por um ou mais caracteres que não sejam espaços em branco (S+); ou (|) urls que começam com www; ```\.``` garante que estamos à procura de um ponto literal. Os textos que corresponderem à busca serão substituídos por ```''```, ou seja, uma string vazia. ```text``` indica a variável que contém o texto original.
+
+```re.sub(r'\@\w+|\#', '', text)```
+Aqui queremos eliminar as menções. Para isso, utilizamos *\@* para procurar o caractere literal @ seguido de um ou mais (+) caracteres de palavra (w) que incluem letras, números e o underscore (_) ou o caractere literal (#). 
+
+```re.sub(r'[^a-zA-Z\d\s]', '', text, flags=re.A)```
+Nessa parte nosso objetivo é remover os caracteres especiais. O símbolo ^ nega tudo que estiver dentro dos colchetes. Ou seja, nossa expressão vai encontrar e substituir por uma string vazia caracteres que não sejam maiúsculos ou minúsculos, números (\d) ou um espaço em branco (\s). A flag ```re.A```, que também pode ser ```re.ASCII```, faz com que *\s* corresponda somente a espaços normais, tabs e quebras de linha, sem incluir outros caracteres de espaço Unicode.
+
+```re.sub(r'\s+', '', text)```
+A expressão acima serve para converter os espaços em branco, tabs e quebras de linha em um espaço simples.
+
+### ```def saving_data(data, file_name='dados_coletados.csv')```
+Nesta função, vamos utilizar a biblioteca pandas para organizar em tabelas nossos dados coletados em ```def collecting_posts```. Como parâmetros, temos 'data', que vai receber nosso dicionário com comentários, e um parâmetro nomeado **file_name**, que contém o nome do arquivo csv de saída desses dados.
+
+Sem dados, a função retorna None. Com dados, criamos nosso dataframe, a principal estrutura de dados da biblioteca pandas. É uma tabela simples, com linhas e colunas. Primeiro criamos o dataframe, ```df = pd.DataFrame(data)```, passando como parâmetro data, que é exatamente nosso dicionário ***collected_data***. A tabela está criada, e agora simplesmente aplicamos às informações contidas na coluna [comment_text] as formatações que definimos na nossa função *clen_text*: ```df['comment_text'] = df['comment_text'].apply(clean_text)```.
+
+Antes de retornar a tabela, salvamos a tabela em um arquivo csv através do método ```to_csv()```. Além do nome do arquivo, também passamos ```index=False```. Este parâmetro é crucial porque o Pandas inclui o índice como a primeira coluna no arquivo CSV. O parâmetro index=False instrui o Pandas a NÃO salvar essa coluna de índice no arquivo.

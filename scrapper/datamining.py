@@ -39,11 +39,11 @@ def login_twitter(driver, username, password):
 
         # caso não encontre:
         if not username_field:
-            print("👀Campo USERNAME não encontrado.")
+            print("Campo USERNAME não encontrado.")
             return False
         
         # caso encontre o campo USERNAME:
-        print(f'✏️Campo sendo preenchido: username({username})')
+        print(f'Campo sendo preenchido: username({username})')
         username_field.clear()
         username_field.send_keys(username)
         username_field.send_keys(Keys.RETURN)
@@ -70,11 +70,11 @@ def login_twitter(driver, username, password):
         
         # caso não encontre:
         if not password_field:
-            print("👀Campo SENHA não encontrado.")
+            print("Campo SENHA não encontrado.")
             return False
         
         # caso encontre o campo SENHA:
-        print(f'✏️Campo sendo preenchido: senha({password})')
+        print(f'Campo sendo preenchido: senha({password})')
         password_field.clear()
         password_field.send_keys(password)
         password_field.send_keys(Keys.RETURN)
@@ -99,15 +99,15 @@ def login_twitter(driver, username, password):
                 continue
 
         if logged_in:
-            print("✅O login foi feito com sucesso!")
+            print("O login foi feito com sucesso!")
             return True
         else:
-            print("❌Login falhou. Por favor, verifique usuário e senha " \
+            print("Login falhou. Por favor, verifique usuário e senha " \
             "novamente.")
             return False
         
     except Exception as e:
-        print(f"❌Falha! Erro durante login: {e}")
+        print(f"Falha! Erro durante login: {e}")
         return False
 
 def collecting_posts(url, username, password, num_posts=10):
@@ -237,7 +237,7 @@ def collecting_posts(url, username, password, num_posts=10):
                 scrollings += 1
 
     except Exception as e:
-        print(f'❌Falha! Erro durante a coleta: {e}')
+        print(f'Falha! Erro durante a coleta: {e}')
 
     finally:
         print("Fazendo logout e fechando o navegador...")
@@ -292,7 +292,7 @@ def collecting_comments(driver, post, post_index):
                 try:
                     comment_text_elements = comment_element.find_elements(
                         By.CSS_SELECTOR, 
-                        'data-testid="tweetText"]'
+                        '[data-testid="tweetText"]'
                     )
                     if comment_text_elements:
                         commentary_text = comment_text_elements[0].text

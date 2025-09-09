@@ -46,7 +46,7 @@ def sentiment_analyser(df, file_name='analise_sentimentos.csv'):
         else: 
             return 'NEUTRO'
         
-    df['sentiment'] = df['commentary_text'].apply(sentiment_classification)
+    df['sentiment'] = df['comment_text'].apply(sentiment_classification)
     df_final = df[['post_code', 'news_channel', 'post_text', 'comment_text',
                     'sentiment']]
 
@@ -75,5 +75,4 @@ def data_presentation(df):
     plt.legend(title='Sentimento')
     plt.tight_layout()
     plt.show()
-
 
