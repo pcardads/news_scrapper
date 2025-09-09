@@ -1,101 +1,101 @@
-post_code,news_channel,post_text,comment_text
+post_code,news_channel,post_text,comment_text,sentiment
 1,@g1,"País vive 'momento delicado', e Bolsonaro sabe que fez 'burrice', diz Lula 
-glo.bo/3JOfLtE #g1",vcs esto acabando vom outras atraes da tv aberta jumentos
+glo.bo/3JOfLtE #g1",vcs esto acabando vom outras atraes da tv aberta jumentos,NEUTRO
 1,@g1,"País vive 'momento delicado', e Bolsonaro sabe que fez 'burrice', diz Lula 
-glo.bo/3JOfLtE #g1",disse lula um sujeito 2x condenado por corrupo 
+glo.bo/3JOfLtE #g1",disse lula um sujeito 2x condenado por corrupo ,POSITIVO
 2,@g1,"MP rejeita prisão de Ciro Gomes mas defende proibição de contato do político com prefeita de Crateús 
-glo.bo/4pgmFrz #g1",vai chegando a eleio e o ciro da massa sai da caverna e comea a aparecer na mdia seja de um jeito bom ou ruim rs
+glo.bo/4pgmFrz #g1",vai chegando a eleio e o ciro da massa sai da caverna e comea a aparecer na mdia seja de um jeito bom ou ruim rs,NEGATIVO
 3,@g1,"Após fala de porta-voz da Casa Branca sobre 'usar meios militares', Itamaraty condena 'ameaças de uso da força' 
-glo.bo/41MUBSK #g1",itamaraty condena ameaas de uso da fora e da
+glo.bo/41MUBSK #g1",itamaraty condena ameaas de uso da fora e da,NEGATIVO
 3,@g1,"Após fala de porta-voz da Casa Branca sobre 'usar meios militares', Itamaraty condena 'ameaças de uso da força' 
-glo.bo/41MUBSK #g1",o trump vai morrer logo esse moribundo
+glo.bo/41MUBSK #g1",o trump vai morrer logo esse moribundo,NEGATIVO
 3,@g1,"Após fala de porta-voz da Casa Branca sobre 'usar meios militares', Itamaraty condena 'ameaças de uso da força' 
-glo.bo/41MUBSK #g1", brazuelanos o porta avies chegou
+glo.bo/41MUBSK #g1", brazuelanos o porta avies chegou,NEUTRO
 3,@g1,"Após fala de porta-voz da Casa Branca sobre 'usar meios militares', Itamaraty condena 'ameaças de uso da força' 
-glo.bo/41MUBSK #g1",trump de olho em nossas terras raras e petrleo
+glo.bo/41MUBSK #g1",trump de olho em nossas terras raras e petrleo,NEUTRO
 3,@g1,"Após fala de porta-voz da Casa Branca sobre 'usar meios militares', Itamaraty condena 'ameaças de uso da força' 
-glo.bo/41MUBSK #g1",isso ataca mais os eua suas antas
+glo.bo/41MUBSK #g1",isso ataca mais os eua suas antas,NEUTRO
 3,@g1,"Após fala de porta-voz da Casa Branca sobre 'usar meios militares', Itamaraty condena 'ameaças de uso da força' 
-glo.bo/41MUBSK #g1",mico aceita que di menos
+glo.bo/41MUBSK #g1",mico aceita que di menos,POSITIVO
 3,@g1,"Após fala de porta-voz da Casa Branca sobre 'usar meios militares', Itamaraty condena 'ameaças de uso da força' 
-glo.bo/41MUBSK #g1", s mandar o ladrao de 9 dedos parar de falar merda que nada acontece
+glo.bo/41MUBSK #g1", s mandar o ladrao de 9 dedos parar de falar merda que nada acontece,NEGATIVO
 3,@g1,"Após fala de porta-voz da Casa Branca sobre 'usar meios militares', Itamaraty condena 'ameaças de uso da força' 
-glo.bo/41MUBSK #g1",v tomar no cu trump filho da puta
+glo.bo/41MUBSK #g1",v tomar no cu trump filho da puta,NEGATIVO
 4,@g1,"Suprema Corte dos EUA decide analisar legalidade das tarifas impostas por Trump 
-glo.bo/3V9Ppoo #g1",supremo dos eua comunista em 321 kakakaak
+glo.bo/3V9Ppoo #g1",supremo dos eua comunista em 321 kakakaak,POSITIVO
 4,@g1,"Suprema Corte dos EUA decide analisar legalidade das tarifas impostas por Trump 
-glo.bo/3V9Ppoo #g1",vai d em nada quem manda l ele em tudo
+glo.bo/3V9Ppoo #g1",vai d em nada quem manda l ele em tudo,NEUTRO
 4,@g1,"Suprema Corte dos EUA decide analisar legalidade das tarifas impostas por Trump 
-glo.bo/3V9Ppoo #g1",demorou 
+glo.bo/3V9Ppoo #g1",demorou ,NEUTRO
 4,@g1,"Suprema Corte dos EUA decide analisar legalidade das tarifas impostas por Trump 
-glo.bo/3V9Ppoo #g1",suprema corte americana t igual a venezuelana
+glo.bo/3V9Ppoo #g1",suprema corte americana t igual a venezuelana,NEGATIVO
 4,@g1,"Suprema Corte dos EUA decide analisar legalidade das tarifas impostas por Trump 
-glo.bo/3V9Ppoo #g1",fck you trump
+glo.bo/3V9Ppoo #g1",fck you trump,NEUTRO
 4,@g1,"Suprema Corte dos EUA decide analisar legalidade das tarifas impostas por Trump 
-glo.bo/3V9Ppoo #g1",vai da em nada brasil vai toma no cu
+glo.bo/3V9Ppoo #g1",vai da em nada brasil vai toma no cu,NEUTRO
 4,@g1,"Suprema Corte dos EUA decide analisar legalidade das tarifas impostas por Trump 
-glo.bo/3V9Ppoo #g1",sim os 10 os 40 so sano de direitos humanos feitas pela sancionado alexandre de moraes
+glo.bo/3V9Ppoo #g1",sim os 10 os 40 so sano de direitos humanos feitas pela sancionado alexandre de moraes,POSITIVO
 5,@g1,"Trump 'não tem medo de usar meios militares para proteger liberdade de expressão', diz Casa Branca em resposta sobre Bolsonaro 
-glo.bo/47wYXRC #g1",o cu laranja dele
+glo.bo/47wYXRC #g1",o cu laranja dele,NEUTRO
 5,@g1,"Trump 'não tem medo de usar meios militares para proteger liberdade de expressão', diz Casa Branca em resposta sobre Bolsonaro 
-glo.bo/47wYXRC #g1",ns no vamos ajoelhar
+glo.bo/47wYXRC #g1",ns no vamos ajoelhar,NEUTRO
 5,@g1,"Trump 'não tem medo de usar meios militares para proteger liberdade de expressão', diz Casa Branca em resposta sobre Bolsonaro 
-glo.bo/47wYXRC #g1",bl bl bl
+glo.bo/47wYXRC #g1",bl bl bl,POSITIVO
 5,@g1,"Trump 'não tem medo de usar meios militares para proteger liberdade de expressão', diz Casa Branca em resposta sobre Bolsonaro 
-glo.bo/47wYXRC #g1",seria a confirmao de que os eua um pas terrorista algo que todos desconfiamos h tempos
+glo.bo/47wYXRC #g1",seria a confirmao de que os eua um pas terrorista algo que todos desconfiamos h tempos,NEGATIVO
 5,@g1,"Trump 'não tem medo de usar meios militares para proteger liberdade de expressão', diz Casa Branca em resposta sobre Bolsonaro 
-glo.bo/47wYXRC #g1",a vem babaca e fala vamos negociar negociar o que deciso judicial
+glo.bo/47wYXRC #g1",a vem babaca e fala vamos negociar negociar o que deciso judicial,NEGATIVO
 5,@g1,"Trump 'não tem medo de usar meios militares para proteger liberdade de expressão', diz Casa Branca em resposta sobre Bolsonaro 
-glo.bo/47wYXRC #g1",liberdade de expresso no moderao humana em posts no facebook x instagram youtube etc big techs querem o custo zero
+glo.bo/47wYXRC #g1",liberdade de expresso no moderao humana em posts no facebook x instagram youtube etc big techs querem o custo zero,POSITIVO
 5,@g1,"Trump 'não tem medo de usar meios militares para proteger liberdade de expressão', diz Casa Branca em resposta sobre Bolsonaro 
-glo.bo/47wYXRC #g1",manda esse fdp tentar invadir nosso pas brasil no pra amadores 
+glo.bo/47wYXRC #g1",manda esse fdp tentar invadir nosso pas brasil no pra amadores ,NEGATIVO
 6,@g1,"Linha 4-Amarela: passageiros enfrentam superlotação na volta para casa após mais de 7 horas de descarrilamento de trem 
-glo.bo/4phKfV4 #g1",privatiza que melhora
+glo.bo/4phKfV4 #g1",privatiza que melhora,POSITIVO
 6,@g1,"Linha 4-Amarela: passageiros enfrentam superlotação na volta para casa após mais de 7 horas de descarrilamento de trem 
-glo.bo/4phKfV4 #g1",cad a notcia do assassinato da ucraniana nos eua 
+glo.bo/4phKfV4 #g1",cad a notcia do assassinato da ucraniana nos eua ,NEGATIVO
 6,@g1,"Linha 4-Amarela: passageiros enfrentam superlotação na volta para casa após mais de 7 horas de descarrilamento de trem 
-glo.bo/4phKfV4 #g1",tem problema no o idiota do carioca ano que vem vai no show da madonna ladygaga etc
+glo.bo/4phKfV4 #g1",tem problema no o idiota do carioca ano que vem vai no show da madonna ladygaga etc,NEGATIVO
 6,@g1,"Linha 4-Amarela: passageiros enfrentam superlotação na volta para casa após mais de 7 horas de descarrilamento de trem 
-glo.bo/4phKfV4 #g1",o metr construdo na venezuela com dinheiro pblico do bndes pelo pt e escondido pela mdia deve funcionar perfeitamente aqui ficamos com isso
+glo.bo/4phKfV4 #g1",o metr construdo na venezuela com dinheiro pblico do bndes pelo pt e escondido pela mdia deve funcionar perfeitamente aqui ficamos com isso,POSITIVO
 7,@g1,"Jovem morre após procedimento estético em clínica da Zona Oeste do Rio 
-glo.bo/45ZVSIM #g1",imagina morrer por conta de uma idiotice desta pqp
+glo.bo/45ZVSIM #g1",imagina morrer por conta de uma idiotice desta pqp,NEGATIVO
 7,@g1,"Jovem morre após procedimento estético em clínica da Zona Oeste do Rio 
-glo.bo/45ZVSIM #g1",cad a notcia do assassinato da ucraniana nos eua 
+glo.bo/45ZVSIM #g1",cad a notcia do assassinato da ucraniana nos eua ,NEGATIVO
 7,@g1,"Jovem morre após procedimento estético em clínica da Zona Oeste do Rio 
-glo.bo/45ZVSIM #g1",parece que as mulheres no aprendem
+glo.bo/45ZVSIM #g1",parece que as mulheres no aprendem,NEUTRO
 7,@g1,"Jovem morre após procedimento estético em clínica da Zona Oeste do Rio 
-glo.bo/45ZVSIM #g1",pqp como mui moderna um bicho vaidoso e burro que no aprende nunca merda nenhuma
+glo.bo/45ZVSIM #g1",pqp como mui moderna um bicho vaidoso e burro que no aprende nunca merda nenhuma,NEGATIVO
 7,@g1,"Jovem morre após procedimento estético em clínica da Zona Oeste do Rio 
-glo.bo/45ZVSIM #g1",burra
+glo.bo/45ZVSIM #g1",burra,NEUTRO
 8,@g1,"Brasil não tem 'soberania monetária' para enfrentar sanções de Trump, alerta especialista 
-glo.bo/4pgdxmK #g1",no tem mas pode e deve ter com essa poltica de tarifao os eua esto conseguindo fazer inimigos se reunirem ndia e china o mercado internacional vai ser mais pulverizado me espanta como o povo de l no acha que isso a p de cal no imperialismo
+glo.bo/4pgdxmK #g1",no tem mas pode e deve ter com essa poltica de tarifao os eua esto conseguindo fazer inimigos se reunirem ndia e china o mercado internacional vai ser mais pulverizado me espanta como o povo de l no acha que isso a p de cal no imperialismo,POSITIVO
 8,@g1,"Brasil não tem 'soberania monetária' para enfrentar sanções de Trump, alerta especialista 
-glo.bo/4pgdxmK #g1",disseram isso apos o tarifao do trump e por aqui nada mudou pelo contrrio melhorou as exportaes abrimos novos mercados
+glo.bo/4pgdxmK #g1",disseram isso apos o tarifao do trump e por aqui nada mudou pelo contrrio melhorou as exportaes abrimos novos mercados,NEUTRO
 8,@g1,"Brasil não tem 'soberania monetária' para enfrentar sanções de Trump, alerta especialista 
-glo.bo/4pgdxmK #g1",especialista em ser capacho dos eua brasil soberano no tem que ser puxadinho dos estragos desunidos
+glo.bo/4pgdxmK #g1",especialista em ser capacho dos eua brasil soberano no tem que ser puxadinho dos estragos desunidos,NEUTRO
 8,@g1,"Brasil não tem 'soberania monetária' para enfrentar sanções de Trump, alerta especialista 
-glo.bo/4pgdxmK #g1",agora que foram ver isso 
+glo.bo/4pgdxmK #g1",agora que foram ver isso ,NEUTRO
 8,@g1,"Brasil não tem 'soberania monetária' para enfrentar sanções de Trump, alerta especialista 
-glo.bo/4pgdxmK #g1",sem anistia
+glo.bo/4pgdxmK #g1",sem anistia,NEUTRO
 9,@g1,"Dino vota para condenar Bolsonaro e mais 7 por golpe de Estado; placar é de 2 a 0 
-glo.bo/4pljlvC #g1",s falta um
+glo.bo/4pljlvC #g1",s falta um,NEGATIVO
 9,@g1,"Dino vota para condenar Bolsonaro e mais 7 por golpe de Estado; placar é de 2 a 0 
-glo.bo/4pljlvC #g1",grow faster on the worlds largest group chat
+glo.bo/4pljlvC #g1",grow faster on the worlds largest group chat,NEUTRO
 9,@g1,"Dino vota para condenar Bolsonaro e mais 7 por golpe de Estado; placar é de 2 a 0 
-glo.bo/4pljlvC #g1",e quem no sabia que isto ia acontecer e claro que isto envolve poltica
+glo.bo/4pljlvC #g1",e quem no sabia que isto ia acontecer e claro que isto envolve poltica,POSITIVO
 9,@g1,"Dino vota para condenar Bolsonaro e mais 7 por golpe de Estado; placar é de 2 a 0 
-glo.bo/4pljlvC #g1",nossa como estou surpreso quem poderia imaginar que ele votaria desse jeito
+glo.bo/4pljlvC #g1",nossa como estou surpreso quem poderia imaginar que ele votaria desse jeito,POSITIVO
 9,@g1,"Dino vota para condenar Bolsonaro e mais 7 por golpe de Estado; placar é de 2 a 0 
-glo.bo/4pljlvC #g1",golao
+glo.bo/4pljlvC #g1",golao,NEUTRO
 9,@g1,"Dino vota para condenar Bolsonaro e mais 7 por golpe de Estado; placar é de 2 a 0 
-glo.bo/4pljlvC #g1",e as imagens que ele apagou
+glo.bo/4pljlvC #g1",e as imagens que ele apagou,NEUTRO
 9,@g1,"Dino vota para condenar Bolsonaro e mais 7 por golpe de Estado; placar é de 2 a 0 
-glo.bo/4pljlvC #g1",papuda cantou alto pro bonoro
+glo.bo/4pljlvC #g1",papuda cantou alto pro bonoro,NEUTRO
 9,@g1,"Dino vota para condenar Bolsonaro e mais 7 por golpe de Estado; placar é de 2 a 0 
-glo.bo/4pljlvC #g1",vergonha desse dia somos todos bolsonaro
+glo.bo/4pljlvC #g1",vergonha desse dia somos todos bolsonaro,NEGATIVO
 10,@g1,"Julgamento de Bolsonaro, dia 3: Moraes diz que ex-presidente era o ‘líder’ e condena todos os réus; placar no STF é de 2 x 0 
-glo.bo/3JT3Ydw #g1",nossa srio conta uma novidade sinceramente isso tudo uma palhaada que inventaram e se agarraram nisso pra cometerem esses abusos de poder no pas isso sim parece ser um verdadeiro golpe
+glo.bo/3JT3Ydw #g1",nossa srio conta uma novidade sinceramente isso tudo uma palhaada que inventaram e se agarraram nisso pra cometerem esses abusos de poder no pas isso sim parece ser um verdadeiro golpe,NEGATIVO
 10,@g1,"Julgamento de Bolsonaro, dia 3: Moraes diz que ex-presidente era o ‘líder’ e condena todos os réus; placar no STF é de 2 x 0 
-glo.bo/3JT3Ydw #g1",brasil 2 x 0 golpistas 
+glo.bo/3JT3Ydw #g1",brasil 2 x 0 golpistas ,NEUTRO
 10,@g1,"Julgamento de Bolsonaro, dia 3: Moraes diz que ex-presidente era o ‘líder’ e condena todos os réus; placar no STF é de 2 x 0 
-glo.bo/3JT3Ydw #g1",segundo os bandidos da falsa direita isto no julgamento imparcial e aplicao da lei mas perseguio aos conservadores pela esquerda desesperada
+glo.bo/3JT3Ydw #g1",segundo os bandidos da falsa direita isto no julgamento imparcial e aplicao da lei mas perseguio aos conservadores pela esquerda desesperada,POSITIVO

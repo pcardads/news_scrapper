@@ -127,7 +127,7 @@ Aqui queremos eliminar as menções. Para isso, utilizamos *\@* para procurar o 
 ```re.sub(r'[^a-zA-Z\d\s]', '', text, flags=re.A)```
 Nessa parte nosso objetivo é remover os caracteres especiais. O símbolo ^ nega tudo que estiver dentro dos colchetes. Ou seja, nossa expressão vai encontrar e substituir por uma string vazia caracteres que não sejam maiúsculos ou minúsculos, números (\d) ou um espaço em branco (\s). A flag ```re.A```, que também pode ser ```re.ASCII```, faz com que *\s* corresponda somente a espaços normais, tabs e quebras de linha, sem incluir outros caracteres de espaço Unicode.
 
-```re.sub(r'\s+', '', text)```
+```re.sub(r'\s+', ' ', text)```
 A expressão acima serve para converter os espaços em branco, tabs e quebras de linha em um espaço simples.
 
 ### ```def saving_data(data, file_name='dados_coletados.csv')```

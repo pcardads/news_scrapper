@@ -8,7 +8,7 @@ def clean_text(text):
     text = re.sub(r'\@\w+|\#', '', text)
     text = re.sub(r'[^a-zA-Z\d\s]', '', text, flags=re.A)
     text = text.lower()
-    text = re.sub(r'\s+', '', text)
+    text = re.sub(r'\s+', ' ', text)
     return text
     # ver README para detalhes
 
