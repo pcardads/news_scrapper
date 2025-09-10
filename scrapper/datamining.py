@@ -43,7 +43,7 @@ def login_twitter(driver, username, password):
             return False
         
         # caso encontre o campo USERNAME:
-        print(f'Campo sendo preenchido: username({username})')
+        print(f'Campo sendo preenchido: username')
         username_field.clear()
         username_field.send_keys(username)
         username_field.send_keys(Keys.RETURN)
@@ -74,7 +74,7 @@ def login_twitter(driver, username, password):
             return False
         
         # caso encontre o campo SENHA:
-        print(f'Campo sendo preenchido: senha({password})')
+        print(f'Campo sendo preenchido: senha')
         password_field.clear()
         password_field.send_keys(password)
         password_field.send_keys(Keys.RETURN)

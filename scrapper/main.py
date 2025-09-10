@@ -1,5 +1,5 @@
-from datamining import collecting_comments, collecting_posts, login_twitter
-from processing import clean_text, saving_data, sentiment_analyser, data_presentation
+from datamining import collecting_posts
+from processing import saving_data, sentiment_analyser, data_presentation
 import getpass
 
 def scrapper():
@@ -49,7 +49,7 @@ def scrapper():
         print("Nenhum dado coletado no momento; verifique o login.")
 
 if __name__ == "__main__":
-    print("VERSÃO COM LOGIN")
+    print("MINERANDO DADOS DO X")
     print("=" * 50)
 
     answer = input("Executar coleta com login? (s/n): ").strip().lower()

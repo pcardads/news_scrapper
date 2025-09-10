@@ -130,9 +130,29 @@ Nessa parte nosso objetivo é remover os caracteres especiais. O símbolo ^ nega
 ```re.sub(r'\s+', ' ', text)```
 A expressão acima serve para converter os espaços em branco, tabs e quebras de linha em um espaço simples.
 
+
 ### ```def saving_data(data, file_name='dados_coletados.csv')```
 Nesta função, vamos utilizar a biblioteca pandas para organizar em tabelas nossos dados coletados em ```def collecting_posts```. Como parâmetros, temos 'data', que vai receber nosso dicionário com comentários, e um parâmetro nomeado **file_name**, que contém o nome do arquivo csv de saída desses dados.
 
 Sem dados, a função retorna None. Com dados, criamos nosso dataframe, a principal estrutura de dados da biblioteca pandas. É uma tabela simples, com linhas e colunas. Primeiro criamos o dataframe, ```df = pd.DataFrame(data)```, passando como parâmetro data, que é exatamente nosso dicionário ***collected_data***. A tabela está criada, e agora simplesmente aplicamos às informações contidas na coluna [comment_text] as formatações que definimos na nossa função *clen_text*: ```df['comment_text'] = df['comment_text'].apply(clean_text)```.
 
 Antes de retornar a tabela, salvamos a tabela em um arquivo csv através do método ```to_csv()```. Além do nome do arquivo, também passamos ```index=False```. Este parâmetro é crucial porque o Pandas inclui o índice como a primeira coluna no arquivo CSV. O parâmetro index=False instrui o Pandas a NÃO salvar essa coluna de índice no arquivo.
+
+### ```def sentiment_analyser(df, file_name='analise_sentimentos.csv')```
+Finalmente chegamos ao ponto em que o programa irá avaliar cada comentário de acordo com a utilização da classe ```SentimentIntensityAnalyzer()```. Ela faz parte da variação em português de uma biblioteca que foi construída para determinar a polaridade emocional de uma frase. 
+
+Vamos por partes. A função que criamos recebe como argumentos *df*, que é o dataframe que criamos anteriormente e ainda um *file-name*, que será o arquivo csv onde armazenaremos a análise de cada comentário. 
+
+Para isso, vamos implementar a função ```def sentiment_classification(text)```, que receberá o texto do comentário para aplicar o método **polarity_scores**. Esse método retorna um dicionário com quatro métricas (neg, neu, pos e compound). A classificação do nosso texto levará em consideração a pontuação da chave 'compound' a partir dos valores definidos como padrão.
+
+```
+score = analyser.polarity_scores(text)
+    if score['compound'] >= 0.05:
+        return 'POSITIVO'
+    elif score['compound'] <= -0.05:
+        return 'NEGATIVO'
+    else: 
+        return 'NEUTRO'
+```
+
+Por fim, criamos uma nova coluna no nosso dataframe, chamada de 'sentiment'. Ela armazenará os sentimentos de cada comentário. Perceba que pegamos os dados da coluna 'comment-text' e aplicamos a função *def sentiment_classification*. Terminamos a função retornando um dataframe final através de um novo arquivo csv.
