@@ -1,5 +1,5 @@
 from datamining import collecting_posts
-from processing import saving_data, sentiment_analyser, data_presentation
+from processing import saving_data, add_sentiment, data_presentation
 import getpass
 
 def scrapper():
@@ -22,23 +22,23 @@ def scrapper():
     profile = input("Digite o nome do perfil para analisar sem o '@': ").strip()
 
     if not profile:
-        profile = "folha"
+        profile = "g1"
 
     url = f"https://x.com/{profile}"
 
     print(f"Iniciando a coleta em {url}. Aguarde...")
-
-    data = collecting_posts(url, username, password, num_posts=10)
+   
+    data = collecting_posts(url, username, password, num_posts=30)
     if data:
         valid_comments = len([d for d in data if d['comment_text'].strip()])
 
         if valid_comments > 0:
-            print(f"COncluído. {valid_comments} comentários encontrados.")
+            print(f"Concluído. {valid_comments} comentários encontrados.")
             print("\nProcessando dados...")
-            df = saving_data(data, f"dados_coletados_{profile}.csv")
-            df_final = sentiment_analyser(df, 
-                                          f"analise_sentimentos_{profile}.csv")
-            data_presentation(df_final)
+            csv_filename = f"dados_coletados_{profile}.csv"
+            saving_data(data, csv_filename)
+            df_updated = add_sentiment(csv_filename)
+            data_presentation(df_updated)
 
         else:
             print("Nenhum comentário encontrado.")

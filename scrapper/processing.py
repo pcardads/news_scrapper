@@ -1,59 +1,68 @@
 import re
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
+
 from LeIA import SentimentIntensityAnalyzer
 
 def clean_text(text):
+    #print(f"texto antes do regex: {text}")
     text = re.sub(r'https?://\S+|www\.\S+', '', text)
     text = re.sub(r'\@\w+|\#', '', text)
-    text = re.sub(r'[^a-zA-Z\d\s]', '', text, flags=re.A)
+    #text = re.sub(r'[^a-zA-Z\d\s]', '', text, flags=re.A)
     text = text.lower()
-    text = re.sub(r'\s+', ' ', text)
     return text
     # ver README para detalhes
 
 
-def saving_data(data, file_name='dados_coletados.csv'):
+def saving_data(data, csv_filename='dados_coletados.csv'):
     if not data:
         print("Sem dados para mostrar/salvar.")
         return None
     
+    # verificando se há um arquivo csv existente(de uma execução prévia) caso exista será deletado 
+    if os.path.isfile(csv_filename):
+        try:
+            os.remove(csv_filename)
+            #print(f"O arquivo '{csv_filename}' já existia(devido a uma execução anterior), portanto será deletado o antigo e criado um novo.")
+        except Exception as e:
+            print(f"Erro ao deleletar o arquivo '{csv_filename}': {e}")
+
     #criando DataFrame:
     df = pd.DataFrame(data)
 
     print("Pré-processando os textos...")
     df['comment_text'] = df['comment_text'].apply(clean_text)
 
-    df.to_csv(file_name, index=False)
-    print(f"Dados salvos em {file_name}")
-    return df
+    df.to_csv(csv_filename, index=False)
+    print(f"Dados salvos em {csv_filename}")
+    
 
 
-def sentiment_analyser(df, file_name='analise_sentimentos.csv'):
+def sentiment_analyser(text):
+    if not (isinstance(text, str)):
+        return
+    analyser = SentimentIntensityAnalyzer()
+    score = analyser.polarity_scores(text) 
+    #print(f"comentário {text}")
+    #print(f"score: {score}")             
+    if score['compound'] >= 0.05:
+        return 'POSITIVO'
+    elif score['compound'] <= -0.05:
+        return 'NEGATIVO'
+    else: 
+        return 'NEUTRO'
+
+
+def add_sentiment(csv_filename='dados_coletados.csv' ):
+    df = pd.read_csv(csv_filename)
     if df is None:
         print("DataFrame inexistente; análise de sentimento não pode ser feita.")
         return None
-    
-    analyser = SentimentIntensityAnalyzer()
-    
-    def sentiment_classification(text):
-        score = analyser.polarity_scores(text)
-
-        if score['compound'] >= 0.05:
-            return 'POSITIVO'
-        elif score['compound'] <= -0.05:
-            return 'NEGATIVO'
-        else: 
-            return 'NEUTRO'
-        
-    df['sentiment'] = df['comment_text'].apply(sentiment_classification)
-    df_final = df[['post_code', 'news_channel', 'post_text', 'comment_text',
-                    'sentiment']]
-
-    df_final.to_csv(file_name, index=False)
-    print(f"Análise de sentimento concluída com sucesso. \
-          Arquivo CSV atualizado como '{file_name}'.")
-    return df_final
+    df['sentiment'] = df['comment_text'].apply(sentiment_analyser)
+    df.to_csv(csv_filename, index=False)
+    print(f"Análise de sentimento concluída com sucesso. \n Arquivo CSV atualizado como '{csv_filename}'.")
+    return df
 
 
 def data_presentation(df):
@@ -66,7 +75,7 @@ def data_presentation(df):
                                      'sentiment']).size().unstack(fill_value=0)
 
     sentiments_counter.plot(kind='bar', stacked=False, figsize=(15,8),
-                            color=['green', 'red', 'grey'])
+                            color=['red', 'grey', 'green'])
     
     plt.title('Número de comentários por sentimento em cada postagem')
     plt.xlabel('Código da postagem')

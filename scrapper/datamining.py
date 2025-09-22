@@ -110,9 +110,9 @@ def login_twitter(driver, username, password):
         print(f"Falha! Erro durante login: {e}")
         return False
 
-def collecting_posts(url, username, password, num_posts=10):
+def collecting_posts(url, username, password, num_posts=5):
     
-    # configs do navagador (ver README)
+    # configs do navegador (ver README)
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
@@ -120,7 +120,7 @@ def collecting_posts(url, username, password, num_posts=10):
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
 
-    # Tenta usar chromedriver já instalado, se não conseguir, baixa
+    # Tenta usar chromedriver já instalado, se não conseguir, baixar
     try:
         driver = webdriver.Chrome(options=options)
     except:
@@ -150,11 +150,12 @@ def collecting_posts(url, username, password, num_posts=10):
         processed_posts = set() # para evitar repetições (ver README)
         collected_posts = 0
         scrollings = 0
-        max_scrollings = 15
+        max_scrollings = 60
 
         print(f'Coletando dados do portal {news_channel}')
-
+        #print(f'numposts = {num_posts}, max_scrollings = {max_scrollings}') 
         while collected_posts < num_posts and scrollings < max_scrollings:
+            print(f'colletcted_posts = {collected_posts}, scrollings = {scrollings}') 
             # começa a busca pelos posts
             posts = driver.find_elements(By.CSS_SELECTOR, 
                                          'article[data-testid="tweet"]')
@@ -257,11 +258,11 @@ def collecting_posts(url, username, password, num_posts=10):
 
 def collecting_comments(driver, post, post_index):
     comments = []
-
+    comments_id = []
     try:
         clickable_elements = post.find_elements(By.CSS_SELECTOR, 
                                                 'a[href*="/status/"]')
-
+        print("clickable elements: ", len(clickable_elements))
         if clickable_elements:
             original_url = driver.current_url
 
@@ -270,41 +271,91 @@ def collecting_comments(driver, post, post_index):
             print(f"Abrindo um post...")
             time.sleep(6)
 
-            # 3 é o número de rolagens que vamos fazer, para 
-            # carregar mais comentários
-            for i in range(3): 
-                driver.execute_script("window.scrollTo(0, " \
-                "window.scrollY + 800);")
-                time.sleep(2)
+            
+            searching_comments = True
+            #contador para comentários duplicados dentro de um post, 
+            # assim comparando os ids únicos(snowflake id)
+            duplicate_comment = 0 
+            while(searching_comments):
 
-            comment_elements = driver.find_elements(
-                By.CSS_SELECTOR, 
-                'article[data-testid="tweet"]'
-            )
+                # 3 é o número de rolagens que vamos fazer, para 
+                # carregar mais comentários
+                for i in range(4): 
+                    driver.execute_script("window.scrollTo(0, " \
+                    "window.scrollY + 800);")
+                    time.sleep(3)
+                
 
-            print(f"Encontrados {len(comment_elements)} elementos.")
+                comment_elements = driver.find_elements(
+                    By.CSS_SELECTOR, 
+                    'article[data-testid="tweet"]'
+                )  
+                if(len(comment_elements) <= 1):
+                    break
+                print(f"Encontrados {len(comment_elements)} elementos.")
+                
 
-            for comment_index, comment_element in enumerate(
-                comment_elements[1:9], 1
-            ):
-            # pulamos o primeiro post, que é o original, 
-            # e coletamos até 8 comentários
-                try:
-                    comment_text_elements = comment_element.find_elements(
-                        By.CSS_SELECTOR, 
-                        '[data-testid="tweetText"]'
-                    )
-                    if comment_text_elements:
-                        commentary_text = comment_text_elements[0].text
-                        if commentary_text.strip() and len(commentary_text) > 5:
-                            comments.append(commentary_text)
-                            print(f"Comentário {comment_index}: {commentary_text[:40]}...")
-                except Exception as e:
-                    print(f"Erro no comentário {comment_index}: {e}.")
-                    continue
+                for comment_index, comment_element in enumerate(
+                    comment_elements[1:], 1
+                ):
+                    try:
+                        comment_text_elements = comment_element.find_elements(
+                            By.CSS_SELECTOR, 
+                            '[data-testid="tweetText"]'
+                        )
+                        comment_links = comment_element.find_elements(
+                            By.CSS_SELECTOR, 
+                            'a'
+                        )
+                        # comment_spans = comment_element.find_elements(
+                        #     By.CSS_SELECTOR, 'span'
+                        # )   
+                        
+                        # for i in range(len(comment_spans)):
+                        #     print("SPANS: ", comment_spans[i].text)
+                        
+
+
+
+                        if comment_text_elements: 
+                            #id único de um post no x, é a numeração que aparece no link de um post                  
+                            snowflake_id = 0
+                            for i in range(len(comment_links)):
+                              comment_link = comment_links[i].get_attribute("href").split('/')
+                              #print("URL:", comment_link)
+                              if(len(comment_link) >= 6 and comment_link[5].isdigit()):
+                                snowflake_id = comment_link[5]
+                                #print("SNOWFLAKE_ID: ", snowflake_id)
+                                break
+                              
+                            #print("CURRENT URL: ", comment_snowflake_ids[i].get_attribute("href").split('/'))
+
+                            commentary_text = comment_text_elements[0].text
+                            #print("comentario atual", comment_text_elements[0].text)
+                            
+                            if snowflake_id in comments_id:
+                                duplicate_comment  += 1
+                                print("procurando comentários duplicados com base no snowflake id(necessário 3 para parar a coleta), " +  
+                                "contador de cometário duplicado: ", duplicate_comment)
+                                if(duplicate_comment >= 1 and duplicate_comment <= 2):
+                                    continue
+                                print("comentário duplicado identificado, parando a coleta de comentários")
+                                searching_comments = False
+                                break
+                            if commentary_text.strip() and len(commentary_text) > 5:
+                                duplicate_comment = 0
+                                comments.append(commentary_text)
+                                comments_id.append(snowflake_id)
+                                #print(f"Comentário {comment_index}: {commentary_text[:40]}...")
+                        else:
+                            searching_comments = False
+                            break      
+                    except Exception as e:
+                        print(f"Erro no comentário {comment_index}: {e}.")
+                        continue
             
             # voltando para a página inicial
-            driver.get(original_url)
+            driver.back()
             time.sleep(3)
         
         else:
@@ -312,5 +363,9 @@ def collecting_comments(driver, post, post_index):
 
     except Exception as e:
         print(f"Erro ao coletar os comentários da postagem: {e}.")
+    
+    for i in range(len(comments)):
+        comment_counter = i+1
+        print(f"Comentário {comment_counter}: {comments[i][:40]}...")
 
     return comments
