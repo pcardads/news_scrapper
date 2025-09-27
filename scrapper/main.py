@@ -28,6 +28,8 @@ def scrapper():
 
     print(f"Iniciando a coleta em {url}. Aguarde...")
    
+   #id="id__mmhakyzgvor" id de um tweet com ad
+
     data = collecting_posts(url, username, password, num_posts=30)
     if data:
         valid_comments = len([d for d in data if d['comment_text'].strip()])

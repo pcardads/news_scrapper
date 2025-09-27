@@ -1,2 +1,3 @@
 /news
-/scrapper/_pycache_
+/scrapper/__pycache__
+*.csv
