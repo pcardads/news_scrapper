@@ -110,12 +110,7 @@ def login_twitter(driver, username, password):
         print(f"Falha! Erro durante login: {e}")
         return False
     
-# função para pegar o id único(snowflake_id) de um tweet que fica presente no link é a numeração após o status   
-def get_snowflake_id(links):
-    for i in range(len(links)):
-        comment_link = links[i].get_attribute("href").split('/')
-        if(len(comment_link) >= 6 and comment_link[5].isdigit()):
-          return comment_link[5]    
+
 
 def collecting_posts(url, username, password, num_posts=5):
     
@@ -160,11 +155,9 @@ def collecting_posts(url, username, password, num_posts=5):
         max_scrollings = 60
         current_post_height = 0
         print(f'Coletando dados do portal {news_channel}')
-        #print(f'numposts = {num_posts}, max_scrollings = {max_scrollings}') 
         to_first_post = True
 
         while collected_posts < num_posts and scrollings < max_scrollings:
-            print(f'colletcted_posts = {collected_posts}, scrollings = {scrollings}') 
             # começa a busca pelos posts
             posts = driver.find_elements(By.CSS_SELECTOR, 
                                          'article[data-testid="tweet"]')
@@ -178,7 +171,8 @@ def collecting_posts(url, username, password, num_posts=5):
 
             print(f'Foram encontrados {len(posts)} posts na página.')
             posts_on_iteration = 0
-
+            
+            #rolagem de página inicial baseado na posição y do primeiro post
             if to_first_post:
                 time.sleep(3)   
                 driver.execute_script(f"window.scrollTo(0, window.scrollY + {posts[0].rect['y']});")
@@ -208,7 +202,6 @@ def collecting_posts(url, username, password, num_posts=5):
                         By.CSS_SELECTOR, '[data-testid="tweetText"]'
                         )
                     
-
                     post_spans = post.find_elements(
                             By.CSS_SELECTOR, 'span'
                         )   
@@ -219,18 +212,18 @@ def collecting_posts(url, username, password, num_posts=5):
 
                     if not post_text.strip():
                         continue
-
+                    
+                    # verificando se o post presente na página é uma propaganda 
+                    # caso seja uma propaganda o post será passado e ignorado
                     post_ad = post_spans[4].text
                     if(post_ad == 'Ad'):
-                        print("achei um post que é AD")
-                        print("post: ", post_ad)
                         current_post_height = int(post.rect['height'])
                         driver.execute_script(f"window.scrollTo(0, window.scrollY + {current_post_height});")
-                        time.sleep(3)
-                        #invalid_comments_id.append(snowflake_id)     
+                        time.sleep(3)    
                         continue
 
-                    #verificando posts (buscas) duplicados:
+                    # verificando posts (buscas) duplicados através do snowflake id
+                    # snowflake id é id único presente nos digitos no link de um post do X 
                     post_id = post_link[0].get_attribute('href').split('/')[5]
                     if post_id in processed_posts:
                         continue
@@ -241,8 +234,10 @@ def collecting_posts(url, username, password, num_posts=5):
 
                     print(f'Post {post_code}: {post_text[:50]}...')
 
-                    current_post_height = int(post.rect['height'])
+                    current_post_height = post.rect['height']
 
+                    driver.execute_script(f"window.scrollTo(0, window.scrollY + {current_post_height});")
+                    time.sleep(3)
 
                     # coleta de comentários
                     comments = collecting_comments(driver, post, post_index)
@@ -263,9 +258,8 @@ def collecting_posts(url, username, password, num_posts=5):
 
                     collected_posts += 1
 
-                    print("VOU SCROLLAR: ", current_post_height)
-                    driver.execute_script(f"window.scrollTo(0, window.scrollY + {current_post_height});")
-                    time.sleep(3)
+                    
+                    
                     
 
                 except Exception as e:
@@ -273,8 +267,7 @@ def collecting_posts(url, username, password, num_posts=5):
                     continue
 
             if collected_posts < num_posts:
-                # print(f"Rolando a página... ({collected_posts}/{num_posts})")
-                # print("VOU SCROLLAR: ", current_post_height)
+                print(f"Rolando a página... ({collected_posts}/{num_posts})")
                 driver.execute_script(f"window.scrollTo(0, window.scrollY + 50);")
                 time.sleep(3)
                 scrollings += 1
@@ -300,7 +293,13 @@ def collecting_posts(url, username, password, num_posts=5):
 
 
         
-
+# função para pegar o id único(snowflake_id) de um post que fica presente no link de post
+# snowflake id é os digitos após o status   
+def get_snowflake_id(links):
+    for i in range(len(links)):
+        comment_link = links[i].get_attribute("href").split('/')
+        if(len(comment_link) >= 6 and comment_link[5].isdigit()):
+          return comment_link[5]    
 
 
 def collecting_comments(driver, post, post_index):
@@ -310,19 +309,21 @@ def collecting_comments(driver, post, post_index):
     try:
         clickable_elements = post.find_elements(By.CSS_SELECTOR, 
                                                 'a[href*="/status/"]')
-        print("clickable elements: ", len(clickable_elements))
+        #print("clickable elements: ", len(clickable_elements))
 
         if clickable_elements:
             driver.execute_script("arguments[0].click();", clickable_elements[0])
             print(f"Abrindo um post...")
             time.sleep(6)
             current_url = driver.current_url.split('/')[5]
-            print("url atual: ", current_url)
             searching_comments = True            
-            # tamanho total da altura dos posts utilizado para a rolagem da janela.
+            # tamanho total da altura dos posts utilizado para a rolagem da tela.
             posts_heights = 0
 
             while(searching_comments):
+
+                # elementos com a tag h2 também estão selecionados a fim
+                # de identificar o fim dos comentários através do header descubra mais / discover more 
                 comment_elements = driver.find_elements(
                     By.CSS_SELECTOR, 
                     'article[data-testid="tweet"], h2'
@@ -330,9 +331,13 @@ def collecting_comments(driver, post, post_index):
                 
                 if(len(comment_elements) <= 1):
                     print("Não há comentários neste post.")
+                    searching_comments = False
                     break
                 
                 if len(comments_id) > 0:
+                    # selecionando o último comentário a fim de coletar o snowflake id 
+                    # assim descobrindo o fim da lista de comentários comparando o 
+                    # o últimos ids das listas de comentários válidos e inválidos
                     last_comment_links = comment_elements[-1].find_elements(
                         By.CSS_SELECTOR, 
                         'a'
@@ -342,26 +347,23 @@ def collecting_comments(driver, post, post_index):
                         searching_comments = False
                         break
 
-
                 print(f"Encontrados {len(comment_elements)} elementos.")
                 
-                #posts_heights += int(comment_elements[0].rect['height'])
-
                 for comment_index, comment_element in enumerate(
                     comment_elements[:], 1
                 ):
-                    try:
-                        #print("comentario TWEET size: ", comment_element.rect['height'])
-                        
+                    try:             
                         head_text = comment_element.text.lower()
+                        # verificando se o header possui o texto descubra mais ou discover more
+                        # assim identificando quando parar de coletar comentários e evitando
+                        # posts fora dos cometários de serem coletados
                         if(comment_element.tag_name == 'h2' and 
                            head_text == 'descubra mais' or head_text == 'discover more'):
-                            print("H2 text: ",  head_text)
-                            print('comment tag: ', comment_element.text)
                             searching_comments = False
                             break
                             
                         posts_heights += int(comment_element.rect['height'])
+
                         comment_text_elements = comment_element.find_elements(
                             By.CSS_SELECTOR, 
                             '[data-testid="tweetText"]'
@@ -375,21 +377,14 @@ def collecting_comments(driver, post, post_index):
                         )   
 
                         
-                        #print("SPAN: ", comment_spans[4].text)
-                        
                         snowflake_id = get_snowflake_id(comment_links)   
                         if comment_text_elements: 
 
-                            #print("comentario TWEET size: ", comment_element.rect['height'])
+                            # passando e ignorando posts com propaganda
                             span_text = comment_spans[4].text
                             if(span_text == 'Ad'):
-                                print("achei um comentário que é AD")
-                                print("span: ", span_text)
                                 invalid_comments_id.append(snowflake_id)     
-                                continue
-
-                            #extraindo o snowflake_id através de uma lista de links presente no tweet    
-                            #print("CURRENT URL: ", comment_snowflake_ids[i].get_attribute("href").split('/'))
+                                continue                            
 
                             commentary_text = comment_text_elements[0].text
                             
@@ -407,13 +402,11 @@ def collecting_comments(driver, post, post_index):
                                invalid_comments_id.append(snowflake_id)     
                     except Exception as e:
                         print(f"Erro no comentário {comment_index}: {e}.")
-                        continue
-                print("tamanho dos elementos: ", len(comment_elements))    
-                print("tamanho total dos posts: ", posts_heights)    
+                        continue      
                 driver.execute_script(f"window.scrollTo(0, window.scrollY + {posts_heights});")
                 time.sleep(3)  
                 posts_heights = 0  
-
+            # voltar para o perfil inicial 
             driver.back()
             time.sleep(2)
           

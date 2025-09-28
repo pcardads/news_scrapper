@@ -5,8 +5,8 @@ import os
 
 from LeIA import SentimentIntensityAnalyzer
 
+#pré processando o texto(nesse caso os comentários) através de expressões regulares
 def clean_text(text):
-    #print(f"texto antes do regex: {text}")
     text = re.sub(r'https?://\S+|www\.\S+', '', text)
     text = re.sub(r'\@\w+|\#', '', text)
     #text = re.sub(r'[^a-zA-Z\d\s]', '', text, flags=re.A)
@@ -14,7 +14,9 @@ def clean_text(text):
     return text
     # ver README para detalhes
 
-
+# salvandos os dados coletados em collecting_posts e collecting_comments
+# assim como também se o arquivo csv já existe e também pré-processando os
+# dados 
 def saving_data(data, csv_filename='dados_coletados.csv'):
     if not data:
         print("Sem dados para mostrar/salvar.")
@@ -43,9 +45,7 @@ def sentiment_analyser(text):
     if not (isinstance(text, str)):
         return
     analyser = SentimentIntensityAnalyzer()
-    score = analyser.polarity_scores(text) 
-    #print(f"comentário {text}")
-    #print(f"score: {score}")             
+    score = analyser.polarity_scores(text)            
     if score['compound'] >= 0.05:
         return 'POSITIVO'
     elif score['compound'] <= -0.05:
@@ -53,7 +53,10 @@ def sentiment_analyser(text):
     else: 
         return 'NEUTRO'
 
-
+# adiciona a coluna sentimento no arquivo .csv lendo os dados coletados do arquivo através
+# do pandas e análisa cada elemento da coluna de comentários(comment_text) através da análise
+# de sentimento(sentiment_analyser) que utiliza a biblioteca leIA e salva todas as alterações 
+# do arquivo .csv através do pandas(df.to_csv)
 def add_sentiment(csv_filename='dados_coletados.csv' ):
     df = pd.read_csv(csv_filename)
     if df is None:
@@ -64,7 +67,7 @@ def add_sentiment(csv_filename='dados_coletados.csv' ):
     print(f"Análise de sentimento concluída com sucesso. \n Arquivo CSV atualizado como '{csv_filename}'.")
     return df
 
-
+#criação do gráfico através do matplolib baseada na contagem do número de comentários por postagem  
 def data_presentation(df):
     if df is None:
         print("DataFrame inexistente. Visualização cancelada.")
