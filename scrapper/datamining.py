@@ -356,17 +356,25 @@ def collecting_comments(driver, post, post_index):
                         # verificando se a tag h2(header 2) possui o texto 'descubra mais' ou 'discover more'
                         # assim identificando quando parar de coletar comentários e evitando
                         # posts fora dos cometários de serem coletados
-                        if(comment_element.tag_name == 'h2' and 
-                           head_text == 'descubra mais' or head_text == 'discover more'):
+                        if(len(comment_elements) <= 3):
+                            print("Não há comentários")
+                            posts_heights = 0  
                             searching_comments = False
                             break
-                            
+                        if(comment_element.tag_name == 'h2'): 
+                            if(head_text == 'descubra mais' or head_text == 'discover more'):
+                                searching_comments = False
+                                break
+                            continue
+                               
                         posts_heights += int(comment_element.rect['height'])
+                            
 
                         comment_text_elements = comment_element.find_elements(
                             By.CSS_SELECTOR, 
                             '[data-testid="tweetText"]'
                         )
+                            
                         comment_links = comment_element.find_elements(
                             By.CSS_SELECTOR, 
                             'a'
@@ -378,7 +386,6 @@ def collecting_comments(driver, post, post_index):
                         
                         snowflake_id = get_snowflake_id(comment_links)   
                         if comment_text_elements: 
-
                             # passando e ignorando posts com propaganda
                             span_text = comment_spans[4].text
                             if(span_text == 'Ad'):
