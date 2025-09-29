@@ -2,6 +2,22 @@ from datamining import collecting_posts
 from processing import saving_data, add_sentiment, data_presentation
 import getpass
 
+# Nome e matrícula dos membros da Equipe
+
+# Nome: Erik Santos Bezerra
+# Matrícula: 2424108
+# Nome: Felipe Rocha Simiao
+# Matrícula: 2514917
+# Nome: Luiz Alberto Pessoa Júnior
+# Matrícula: 2425141
+# Nome: Maria Eduarda Menezes Oliveira
+# Matrícula: 2415599
+# Nome: Mateus Silvestre Estevam
+# Matrícula: 2514879
+# Nome: Paulo Cardoso Ferreira
+# Matrícula: 2425190
+
+
 def scrapper():
     print("INICIANDO SCRAPPING E DATAMINING NO X...")
     print("=" * 50)

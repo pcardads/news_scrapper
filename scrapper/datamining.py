@@ -321,7 +321,6 @@ def collecting_comments(driver, post, post_index):
             posts_heights = 0
 
             while(searching_comments):
-
                 # elementos com a tag h2 também estão selecionados a fim
                 # de identificar o fim dos comentários através do header descubra mais / discover more 
                 comment_elements = driver.find_elements(
@@ -354,7 +353,7 @@ def collecting_comments(driver, post, post_index):
                 ):
                     try:             
                         head_text = comment_element.text.lower()
-                        # verificando se o header possui o texto descubra mais ou discover more
+                        # verificando se a tag h2(header 2) possui o texto 'descubra mais' ou 'discover more'
                         # assim identificando quando parar de coletar comentários e evitando
                         # posts fora dos cometários de serem coletados
                         if(comment_element.tag_name == 'h2' and 
