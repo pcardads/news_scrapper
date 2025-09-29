@@ -365,7 +365,7 @@ def collecting_comments(driver, post, post_index):
                             if(head_text == 'descubra mais' or head_text == 'discover more'):
                                 searching_comments = False
                                 break
-                            continue
+                            
                                
                         posts_heights += int(comment_element.rect['height'])
                             
