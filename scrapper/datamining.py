@@ -315,7 +315,7 @@ def collecting_comments(driver, post, post_index):
             driver.execute_script("arguments[0].click();", clickable_elements[0])
             print(f"Abrindo um post...")
             time.sleep(6)
-            current_url = driver.current_url.split('/')[5]
+            current_url_id = driver.current_url.split('/')[5]
             searching_comments = True            
             # tamanho total da altura dos posts utilizado para a rolagem da tela.
             posts_heights = 0
@@ -394,9 +394,9 @@ def collecting_comments(driver, post, post_index):
 
                             commentary_text = comment_text_elements[0].text
                             
-                            if snowflake_id in comments_id or snowflake_id == current_url:
+                            if snowflake_id in comments_id or snowflake_id == current_url_id:
                                 continue
-                                
+
                             if commentary_text.strip() and len(commentary_text) > 0:
                                 comments.append(commentary_text)
                                 comments_id.append(snowflake_id)

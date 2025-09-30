@@ -16,6 +16,7 @@ import getpass
 # Matrícula: 2514879
 # Nome: Paulo Cardoso Ferreira
 # Matrícula: 2425190
+# link do video: https://drive.google.com/file/d/1DVysPswPpawitPiDBxN8EiqPGR-M35yH/view?usp=sharing
 
 
 def scrapper():
